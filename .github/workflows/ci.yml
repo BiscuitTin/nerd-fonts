@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+  CASCADIA_CODE_VERSION: 2110.31
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        font:
+          - CascadiaCode-Bold
+          - CascadiaCode-BoldItalic
+          - CascadiaCode-ExtraLight
+          - CascadiaCode-ExtraLightItalic
+          - CascadiaCode-Italic
+          - CascadiaCode-Light
+          - CascadiaCode-LightItalic
+          - CascadiaCode-Regular
+          - CascadiaCode-SemiBold
+          - CascadiaCode-SemiBoldItalic
+          - CascadiaCode-SemiLight
+          - CascadiaCode-SemiLightItalic
+          - CascadiaMono-Bold
+          - CascadiaMono-BoldItalic
+          - CascadiaMono-ExtraLight
+          - CascadiaMono-ExtraLightItalic
+          - CascadiaMono-Italic
+          - CascadiaMono-Light
+          - CascadiaMono-LightItalic
+          - CascadiaMono-Regular
+          - CascadiaMono-SemiBold
+          - CascadiaMono-SemiBoldItalic
+          - CascadiaMono-SemiLight
+          - CascadiaMono-SemiLightItalic
+
+    steps:
+      - run: |
+          sudo add-apt-repository -y ppa:fontforge/fontforge && sudo apt-get -yf install fontforge
+          curl -LSsO https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts/font-patcher && chmod +x font-patcher
+      - run: |
+          curl -LSsO https://github.com/microsoft/cascadia-code/releases/download/v$CASCADIA_CODE_VERSION/CascadiaCode-$CASCADIA_CODE_VERSION.zip
+          unzip CascadiaCode-$CASCADIA_CODE_VERSION.zip
+      - env:
+          FONT: ${{matrix.font}}
+        run: |
+          ./font-patcher -c otf/static/$FONT.otf
+          ./font-patcher -sc otf/static/$FONT.otf
+          ./font-patcher -wc otf/static/$FONT.otf
+          ./font-patcher -swc otf/static/$FONT.otf
+      - name: Upload fonts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{matrix.font}}
+          path: ./*.otf
