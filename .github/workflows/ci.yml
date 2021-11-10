@@ -39,21 +39,22 @@ jobs:
           - CascadiaMono-SemiBoldItalic
           - CascadiaMono-SemiLight
           - CascadiaMono-SemiLightItalic
+      fail-fast: false
 
     steps:
       - run: |
           sudo add-apt-repository -y ppa:fontforge/fontforge && sudo apt-get -yf install fontforge
-          curl -LSsO https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts/font-patcher && chmod +x font-patcher
+          curl -LSsO https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts/font-patcher
       - run: |
           curl -LSsO https://github.com/microsoft/cascadia-code/releases/download/v$CASCADIA_CODE_VERSION/CascadiaCode-$CASCADIA_CODE_VERSION.zip
           unzip CascadiaCode-$CASCADIA_CODE_VERSION.zip
       - env:
           FONT: ${{matrix.font}}
         run: |
-          ./font-patcher -c otf/static/$FONT.otf
-          ./font-patcher -sc otf/static/$FONT.otf
-          ./font-patcher -wc otf/static/$FONT.otf
-          ./font-patcher -swc otf/static/$FONT.otf
+          fontforge -script font-patcher -c otf/static/$FONT.otf
+          fontforge -script font-patcher -sc otf/static/$FONT.otf
+          fontforge -script font-patcher -wc otf/static/$FONT.otf
+          fontforge -script font-patcher -swc otf/static/$FONT.otf
       - name: Upload fonts
         uses: actions/upload-artifact@v2
         with:
