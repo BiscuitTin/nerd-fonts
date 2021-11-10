@@ -42,9 +42,11 @@ jobs:
       fail-fast: false
 
     steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: ryanoasis/nerd-fonts
       - run: |
           sudo apt-get -yf install fontforge
-          curl -LSsO https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts/font-patcher
       - run: |
           curl -LSsO https://github.com/microsoft/cascadia-code/releases/download/v$CASCADIA_CODE_VERSION/CascadiaCode-$CASCADIA_CODE_VERSION.zip
           unzip CascadiaCode-$CASCADIA_CODE_VERSION.zip
