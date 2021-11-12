@@ -6,7 +6,7 @@ on:
 
 env:
   CASCADIA_CODE_VERSION: 2110.31
-  NERD_FONTS_VERSION: b9e5b3a9a4a8237fc266ca39c67ff9e35675ebaf
+  NERD_FONTS_VERSION: 1454141c956161aea260d598489c95f74f90f2d7
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: ryanoasis/nerd-fonts
+          repository: BiscuitTin/ryanoasis-nerd-fonts
           ref: ${{env.NERD_FONTS_VERSION}}
       - run: sudo apt-get update && sudo apt-get -yf install fontforge
       - run: |
