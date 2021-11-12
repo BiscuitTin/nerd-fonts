@@ -3,12 +3,10 @@ name: CI
 on:
   push:
     branches: [main]
-  schedule:
-    - cron: '0 17 * * 2'
-  workflow_dispatch:
 
 env:
   CASCADIA_CODE_VERSION: 2110.31
+  NERD_FONTS_VERSION: b9e5b3a9a4a8237fc266ca39c67ff9e35675ebaf
 
 jobs:
   build:
@@ -46,8 +44,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: ryanoasis/nerd-fonts
-      - run: |
-          sudo apt-get update && sudo apt-get -yf install fontforge
+          ref: ${{env.NERD_FONTS_VERSION}}
+      - run: sudo apt-get update && sudo apt-get -yf install fontforge
       - run: |
           curl -LSsO https://github.com/microsoft/cascadia-code/releases/download/v$CASCADIA_CODE_VERSION/CascadiaCode-$CASCADIA_CODE_VERSION.zip
           unzip CascadiaCode-$CASCADIA_CODE_VERSION.zip
@@ -61,5 +59,5 @@ jobs:
       - name: Upload fonts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{matrix.font}}_${{env.CASCADIA_CODE_VERSION}}
+          name: ${{matrix.font}}_${{env.CASCADIA_CODE_VERSION}}_${{env.NERD_FONTS_VERSION}}
           path: ./*.otf
