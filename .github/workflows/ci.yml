@@ -8,6 +8,10 @@ env:
   CASCADIA_CODE_VERSION: 2111.01
   NERD_FONTS_VERSION: d04875dc8af1a3853aec4e8f0828da9846a7c009
 
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -54,8 +58,6 @@ jobs:
         run: |
           fontforge -script font-patcher -c otf/static/$FONT.otf
           fontforge -script font-patcher -sc otf/static/$FONT.otf
-          fontforge -script font-patcher -wc otf/static/$FONT.otf
-          fontforge -script font-patcher -swc otf/static/$FONT.otf
       - name: Upload fonts
         uses: actions/upload-artifact@v3
         with:
