@@ -59,7 +59,7 @@ jobs:
           fontforge -script font-patcher -c otf/static/$FONT.otf
           fontforge -script font-patcher -sc otf/static/$FONT.otf
       - name: Upload fonts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{matrix.font}}_${{env.CASCADIA_CODE_VERSION}}_${{env.NERD_FONTS_VERSION}}
           path: ./*.otf
