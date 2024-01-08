@@ -6,7 +6,7 @@ on:
 
 env:
   CASCADIA_CODE_VERSION: 2111.01
-  NERD_FONTS_VERSION: 1a3b100231d7f66b9bf7f30afe726c67ad727feb
+  NERD_FONTS_VERSION: cf49618ac2c0a994a99231b6117de212285f9f82
 
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}
